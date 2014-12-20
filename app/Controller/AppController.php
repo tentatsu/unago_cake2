@@ -69,7 +69,6 @@ class AppController extends Controller {
     public function beforeFilter()
     {
         parent::beforeFilter();
-		$this->layout = "bootstrap3";
 
 //        $this->Security->blackHoleCallback = '_blackHole';
 //        if ($this->sslFlag) {

@@ -1,12 +1,12 @@
 <div id="loginInnerWrap">
-	<div class="section"><img src="images/common/bd_section.png" /></div>
+	<div class="section"></div>
 	<div id="loginInner">
 		<?php echo $this->Form->create('Owner', array('url' => $this->Html->Url('/owners/login'), 'id' => 'loginform', 'class' => 'bs-example form-horizontal') ); ?>
 		<div id="loginInnerContent">
-			<div id="topIcon"><img src="images/login/Icon_topIcon.png" width="100%" /></div>
+			<div id="topIcon"></div>
 			<div id="sectionTop">
-				<p id="sectionTitle">PandY ログイン</p>
-				<p id="sectionCaption">PandYを楽しむには会員登録をしてログインが必要です。</p>
+				<p id="sectionTitle">beer ログイン</p>
+				<p id="sectionCaption">beerを楽しむには会員登録をしてログインが必要です。</p>
 			</div>
 
 			<!-- エラー時に表示するテキストです -->
