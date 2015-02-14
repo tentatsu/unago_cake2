@@ -13,7 +13,8 @@
         "cakedc/search": "2.5.*",
         "cakedc/utils": "1.4.*",
         "ichikaway/cakeplus": "2.0.*@dev",
-        "slywalker/boost_cake": "*"
+        "slywalker/boost_cake": "*",
+        "josegonzalez/cakephp-upload": "1.1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

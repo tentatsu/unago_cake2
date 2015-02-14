@@ -1,3 +1,28 @@
+<?php echo $this->Form->create('Owner', array(
+	'inputDefaults' => array(
+		'div' => 'form-group',
+		'wrapInput' => false,
+		'class' => 'form-control'
+	),
+	'class' => 'well'
+)); ?>
+<fieldset>
+	<legend>Beer</legend>
+	<?php echo $this->Form->input('text', array(
+		'label' => 'Label name',
+		'placeholder' => 'Type something…',
+		'after' => '<span class="help-block">Example block-level help text here.</span>'
+	)); ?>
+
+	<?php echo $this->Form->submit('Submit', array(
+		'div' => false,
+		'class' => 'btn btn-default'
+	)); ?>
+</fieldset>
+<?php echo $this->Form->end(); ?>
+
+
+
 <div id="loginInnerWrap">
 	<div class="section"></div>
 	<div id="loginInner">
@@ -8,7 +33,6 @@
 				<p id="sectionTitle">beer ログイン</p>
 				<p id="sectionCaption">beerを楽しむには会員登録をしてログインが必要です。</p>
 			</div>
-
 			<!-- エラー時に表示するテキストです -->
 			<div class="inputWrap">
 				<div class="error">
@@ -18,11 +42,11 @@
 
 			<div class="inputWrap">
 				<p class="label">メールアドレス</p>
-				<?php echo $this->Form->input('email', array('label' => false, 'id' => 'user_login', 'class' => 'input', 'div' => false)); ?>
+				<?php echo $this->Form->input('email', array('label' => false, 'id' => 'user_login', 'div' => false)); ?>
 			</div>
 			<div class="inputWrap">
 				<p class="label">パスワード</p>
-				<?php echo $this->Form->input('password', array('label' => false, 'id' => 'user_pass', 'class' => 'input', 'size' => 20, 'div' => false)); ?>
+				<?php echo $this->Form->input('password', array('label' => false, 'id' => 'user_pass', 'size' => 20, 'div' => false)); ?>
 			</div>
 
 			<?php echo $this->Html->link("パスワードをお忘れの方はこちら", array('controller' => 'owners', 'action' => 'password'), array('class' => 'underLine')); ?>
@@ -30,7 +54,7 @@
 			<?php echo $this->Html->link("新規登録の方はこちら", array('controller' => 'owners', 'action' => 'signupEmail'), array('class' => 'borderButton ophv')); ?>
 			<div class="buttonWrap">
 				<a href="#" class="halfButtonA ophv">戻る</a><!-- ※ログイン画面って戻れますっけ？ -->
-				<?php echo $this->Form->submit(__('ログイン'), array('class' => 'halfButtonB ophv')); ?>
+				<?php echo $this->Form->submit(__('ログイン'), array('class' => 'btn btn-default')); ?>
 			</div>
 
 		</div><!-- /#loginInnerContent -->

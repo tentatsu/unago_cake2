@@ -82,6 +82,7 @@ CakePlugin::load('DebugKit');
 CakePlugin::load('Migrations');
 CakePlugin::load('Cakeplus');
 CakePlugin::load('BoostCake');
+CakePlugin::load('Upload');
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter . By default CakePHP bundles two filters:
@@ -140,6 +141,37 @@ Configure::write('Owner.signup_process', [
     'pet' => '847538252935729357239a',
     'questionnaire' => '5094873502943857209348572309452',
 ]);
+
+Configure::write('MASTER_PREFECTURES', array(
+	'1' => '北海道', '2' => '青森県', '3' => '岩手県', '4' => '宮城県', '5' => '秋田県',
+	'6' => '山形県', '7' => '福島県', '8' => '茨城県', '9' => '栃木県', '10' => '群馬県',
+	'11' => '埼玉県', '12' => '千葉県', '13' => '東京都', '14' => '神奈川県', '15' => '新潟県',
+	'16' => '富山県', '17' => '石川県', '18' => '福井県', '19' => '山梨県', '20' => '長野県',
+	'21' => '岐阜県', '22' => '静岡県', '23' => '愛知県', '24' => '三重県', '25' => '滋賀県',
+	'26' => '京都府', '27' => '大阪府', '28' => '兵庫県', '29' => '奈良県', '30' => '和歌山県',
+	'31' => '鳥取県', '32' => '島根県', '33' => '岡山県', '34' => '広島県', '35' => '山口県',
+	'36' => '徳島県', '37' => '香川県', '38' => '愛媛県', '39' => '高知県', '40' => '福岡県',
+	'41' => '佐賀県', '42' => '長崎県', '43' => '熊本県', '44' => '大分県', '45' => '宮崎県',
+	'46' => '鹿児島県', '47' => '沖縄県',
+));
+
+
+// ビール系の定数
+Configure::write('MASTER_TAGS', array(
+    '1' => array('name' => '蔵元', 'column' => 'company_id'),
+    '2' => array('name' => 'ビールの種類','column' => 'kind'),
+    '3' => array('name' => '色','column' => 'color'),
+    '4' => array('name' => '味','column' => 'bitter'),
+    '5' => array('name' => 'ボディ','column' => 'bottle_body'),
+));
+
+function get_master_tag_names() {
+    $ret = array();
+    foreach (Configure::read('MASTER_TAGS') as $n => $v) {
+        $ret[$n] = $v['name'];
+    }
+    return $ret;
+}
 
 function vd($o) {
 	if ( (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] == 'production') || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'aaaaa.jp') ){

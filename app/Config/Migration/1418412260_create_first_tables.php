@@ -81,36 +81,7 @@ class CreateFirstTables extends CakeMigration {
                     ),
                     'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
                 ),
-                'pet_classifications' => array(
-                    'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
-                    'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 128, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-                    'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-                    'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
-                    'indexes' => array(
-                        'PRIMARY' => array('column' => 'id', 'unique' => 1),
-                    ),
-                    'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-                ),
-                'pets' => array(
-                    'id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
-                    'owner_id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'index'),
-                    'pet_classification_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'key' => 'index'),
-                    'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 128, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-                    'sex' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false, 'comment' => '1 : オス
-2 : メス'),
-                    'classification' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 128, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-                    'age' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false),
-                    'message' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-                    'classification_other' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 128, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-                    'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-                    'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
-                    'indexes' => array(
-                        'PRIMARY' => array('column' => 'id', 'unique' => 1),
-                        'pets_fk_owner_id' => array('column' => 'owner_id', 'unique' => 0),
-                        'pets_fk_pet_classification_id' => array('column' => 'pet_classification_id', 'unique' => 0),
-                    ),
-                    'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-                ),
+
                 'question_choices' => array(
                     'questionnaire_id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'index'),
                     'question_option_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'index'),

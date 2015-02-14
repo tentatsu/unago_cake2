@@ -35,14 +35,25 @@ CREATE TABLE companies
 (
 	id int NOT NULL,
 	name varchar(128) NOT NULL,
-	zip1 char(3),
-	zip2 char(4),
-	address1 varchar(255),
-	address2 varchar(255),
+	zip char(7),
+  prefecture_id int,
+	address varchar(255),
 	tel varchar(32),
 	created datetime,
 	modified datetime,
 	PRIMARY KEY (id)
+);
+
+CREATE TABLE beers
+(
+  id int NOT NULL,
+  name varchar(128) NOT NULL,
+  company_id int NOT NULL,
+  bitter int NOT NULL ,
+  bottle_body int NOT NULL ,
+  created datetime,
+  modified datetime,
+  PRIMARY KEY (id)
 );
 
 

@@ -27,7 +27,7 @@ class AppController extends Controller {
     public $components = array(
         'Session',
         'DebugKit.Toolbar',
-        'Security' => ['validatePost' => false],
+//        'Security' => ['validatePost' => false],
 		'Auth' => array(
 			'loginRedirect'  => array('controller' => 'owners', 'action' => 'index'),
 			'logoutRedirect' => array('controller' => 'owners', 'action' => 'login'),
@@ -42,13 +42,24 @@ class AppController extends Controller {
 						'hashType' => 'sha256'
 					)
 				)
+			),
+			'flash' => array(
+				'element' => 'alert',
+				'key' => 'auth',
+				'params' => array(
+					'plugin' => 'BoostCake',
+					'class' => 'alert-error'
+				)
 			)
 		)
     );
     public $helpers = [
         'Session',
-        'Time',
-        'Form' => ['className' => 'AppForm'],
+		'Html' => array('className' => 'BoostCake.BoostCakeHtml'),
+		'Form' => array('className' => 'BoostCake.BoostCakeForm'),
+		'Paginator' => array('className' => 'BoostCake.BoostCakePaginator'),
+		'Time',
+//        'Form' => ['className' => 'AppForm'],
     ];
     public $sslFlag = true;
 
