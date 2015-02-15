@@ -17,7 +17,8 @@ class MasterTagsController extends AppController {
 	public $components = array('Paginator', 'Session');
 
 	public function beforeFilter() {
-		$this->Auth->allow();
+		parent::beforeFilter();
+//		$this->Auth->allow();
 		$this->set('master_tags', get_master_tag_names());
 	}
 
@@ -131,6 +132,8 @@ class MasterTagsController extends AppController {
 		}
 		$options = array('conditions' => array('MasterTag.' . $this->MasterTag->primaryKey => $id));
 		$this->set('masterTag', $this->MasterTag->find('first', $options));
+		$this->render('/MasterTags/view');
+
 	}
 
 /**

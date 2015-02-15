@@ -26,7 +26,14 @@
 <div id="loginInnerWrap">
 	<div class="section"></div>
 	<div id="loginInner">
-		<?php echo $this->Form->create('Owner', array('url' => $this->Html->Url('/owners/login'), 'id' => 'loginform', 'class' => 'bs-example form-horizontal') ); ?>
+		<?php echo $this->Form->create('Owner', array(
+			'inputDefaults' => array(
+				'div' => 'form-group',
+				'wrapInput' => false,
+				'class' => 'form-control'
+			),
+			'class' => 'well'
+		)); ?>
 		<div id="loginInnerContent">
 			<div id="topIcon"></div>
 			<div id="sectionTop">

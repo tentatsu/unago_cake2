@@ -36,7 +36,7 @@ class OwnerRegistrationService {
     public function sendConfirmEmail(array $ownerRegistration) {
         $email = $ownerRegistration['OwnerRegistration']['email'];
         $this->__CakeEmail->addTo($email)
-            ->subject('【PandY ペットアンドユウ】本登録手続きのお願い')
+            ->subject('【Beers】本登録手続きのお願い')
             ->template('registration_confirm', 'default')
             ->viewVars([
                 'ownerRegistration' => $ownerRegistration,
@@ -94,24 +94,20 @@ class OwnerRegistrationService {
      * @throws Exception
      */
     public function saveOwner(array $data) {
-        if (!$this->__Owner->saveAssociated($data, [])) {
+        print_r($data);
+        if (!$this->__Owner->save($data)) {
+            print_r($this->__Owner->validationErrors);
             return false;
         }
         $ownerId = $this->__Owner->id;
         $conditions = [
             'Owner.id' => $ownerId,
         ];
-        $contain = [
-            'Pet' => [
-                'PetClassification',
-            ],
-            'Company',
-        ];
         $owner = $this->__Owner->find('first', compact('conditions', 'contain'));
 
         $email = $data['Owner']['email'];
         $this->__CakeEmail->addTo($email)
-            ->subject('【PandY ペットアンドユウ】会員登録完了のご案内')
+            ->subject('【Beer】会員登録完了のご案内')
             ->template('signup_complete', 'default')
             ->viewVars([
                 'owner' => $owner,

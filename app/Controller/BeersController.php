@@ -17,7 +17,8 @@ class BeersController extends AppController {
 	public $components = array('Paginator', 'Session');
 
 	public function beforeFilter() {
-		$this->Auth->allow();
+		parent::beforeFilter();
+//		$this->Auth->allow();
 	}
 /**
  * index method

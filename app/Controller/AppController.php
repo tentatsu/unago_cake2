@@ -29,14 +29,14 @@ class AppController extends Controller {
         'DebugKit.Toolbar',
 //        'Security' => ['validatePost' => false],
 		'Auth' => array(
-			'loginRedirect'  => array('controller' => 'owners', 'action' => 'index'),
-			'logoutRedirect' => array('controller' => 'owners', 'action' => 'login'),
-			'loginAction'    => array('controller' => 'owners', 'action' => 'login'),
+			'loginRedirect'  => array('controller' => 'users', 'action' => 'index'),
+			'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
+			'loginAction'    => array('controller' => 'users', 'action' => 'login'),
 			'authenticate'   => array(
 				'Form' => array(
-					'userModel' => 'Owner',
+					'userModel' => 'User',
 					'fields' => array('username' => 'email'),
-					'scope' => array('owner_status' => OWNER_STATUS_VALID),
+//					'scope' => array('owner_status' => OWNER_STATUS_VALID),
 					'passwordHasher' => array(
 						'className' => 'Simple',
 						'hashType' => 'sha256'
@@ -80,6 +80,29 @@ class AppController extends Controller {
     public function beforeFilter()
     {
         parent::beforeFilter();
+		if(isset($this->request->params['admin'])){
+			$this->Auth->authenticate = array(
+				'Form' => array(
+					'userModel' => 'Owner',
+					'fields' => array('username' => 'email','password'=>'password'),
+					'scope' => array('owner_status' => OWNER_STATUS_VALID),
+					'passwordHasher' => array(
+						'className' => 'Simple',
+						'hashType' => 'sha256'
+					)
+				)
+			);
+			$this->Auth->loginAction = array('controller' => 'owners','action' => 'login', 'admin'=>true);
+			$this->Auth->loginRedirect = array('controller' => 'owners', 'action' => 'index', 'admin'=>true);
+			$this->Auth->logoutRedirect = array('controller' => 'owners', 'action' => 'login', 'admin'=>true);
+			AuthComponent::$sessionKey = "Auth.Owner";
+			$this->layout = 'admin'; //レイアウトを切り替える。
+		} else {
+			$this->layout = 'default'; //レイアウトを切り替える。
+			AuthComponent::$sessionKey = "Auth.User";
+		}
+		$this->Auth ? $this->user = $this->Auth->user() : $this->user = array();
+		$this->set('user', $this->user);
 
 //        $this->Security->blackHoleCallback = '_blackHole';
 //        if ($this->sslFlag) {

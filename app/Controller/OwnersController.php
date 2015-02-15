@@ -8,25 +8,28 @@ App::uses('CakeEmail', 'Network/Email');
  *
  * @property Owner $Owner
  * @property OwnerRegistration $OwnerRegistration
- * @property Pet $Pet
  */
 class OwnersController extends AppController {
 
     public $uses = [
         'Owner',
         'OwnerRegistration',
-        'Pet',
     ];
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow();
+//		$this->Auth->allow();
+	}
+
+	public function admin_index() {
+		vd("hogehoge");
+
 	}
 
 	/**
      * 新規登録メールの送信
      */
-    public function signupEmail() {
+    public function admin_signupEmail() {
         $this->set('title_for_layout', '新規会員登録');
         if ($this->request->is(['post', 'put'])) {
             $this->OwnerRegistration->begin();
@@ -34,6 +37,7 @@ class OwnersController extends AppController {
                 $data = $this->request->data;
                 $this->OwnerRegistration->set($data);
                 if (!$this->OwnerRegistration->validates()) {
+                    pr($this->OwnerRegistration->validationErrors );
                     throw new Exception();
                 }
 
@@ -64,12 +68,14 @@ class OwnersController extends AppController {
 
                 $this->OwnerRegistration->commit();
                 $this->set(compact('ownerRegistration'));
-                $this->render('/Owners/signup_email_complete');
+                $this->render('/Owners/admin_signup_email_complete');
             } catch (Exception $e) {
                 CakeLog::alert($e->getMessage());
                 $this->OwnerRegistration->rollback();
                 $this->Session->setFlash('新規登録メールが送信できませんでした', 'alert');
             }
+        } else {
+            $this->render('/Owners/admin_signup_email');
         }
     }
 
@@ -79,7 +85,7 @@ class OwnersController extends AppController {
      * @param $id
      * @param $token
      */
-    public function signupEmailConfirm($id, $token) {
+    public function admin_signupEmailConfirm($id, $token) {
 
         $OwnerRegistrationService = new OwnerRegistrationService(null, $this->OwnerRegistration);
         $ownerRegistration = $OwnerRegistrationService->confirmEmail($id, $token);
@@ -95,30 +101,39 @@ class OwnersController extends AppController {
     /**
      * サインアップ
      */
-    public function signup() {
+    public function admin_signup() {
         $this->set('title_for_layout', '新規会員登録');
         if ($this->request->is(['post', 'put'])) {
-            if (!$this->Session->check('signup_data')) {
-                $this->redirect(['controller' => 'home', 'action' => 'index']);
-            }
-            if (empty($this->request->data['Owner']['p'])) {
-                $this->redirect(['controller' => 'home', 'action' => 'index']);
+            echo "if!!!!!";
+            $OwnerRegistrationService = new OwnerRegistrationService(null, $this->OwnerRegistration);
+            $owner = $this->Session->read('signup_data');
+			print_r($this->request->data);
+			echo "<br>";
+			print_r($owner);
+			echo "<br>";
+            $owner = Hash::merge($owner, $this->request->data);
+			print_r($owner);
+			echo "<br>";
+            if (!$OwnerRegistrationService->saveOwner($owner)) {
+                echo "111";
+                $this->Session->setFlash('新規登録できませんでした。再度登録をお願いいたします', 'alert');
+//                $this->redirect(['controller' => 'home', 'action' => 'index']);
             }
 
-            $p = $this->request->data['Owner']['p'];
-            switch ($p) {
-//                case Configure::read('Owner.signup_process.pet'):
-//                    // ペット入力
-//                    $this->__petInput();
-//                    break;
-//                case Configure::read('Owner.signup_process.questionnaire'):
-//                    // アンケート入力
-//                    $this->__questionnaireInput();
-//                    break;
-                default:
-                    $this->redirect(['controller' => 'home', 'action' => 'index']);
+            if (!$this->Session->check('signup_data')) {
+                echo "222";
+//                $this->redirect(['controller' => 'home', 'action' => 'index']);
             }
+            if (empty($this->request->data['Owner']['p'])) {
+                echo "33";
+                //                $this->redirect(['controller' => 'home', 'action' => 'index']);
+            }
+
+            echo "444";
+            $p = $this->request->data['Owner']['p'];
+//            $this->redirect(['controller' => 'home', 'action' => 'index']);
         } else {
+            echo "else!!!!!";
             if (!$this->Session->check('registration_email')) {
                 throw new NotFoundException();
             }
@@ -133,84 +148,9 @@ class OwnersController extends AppController {
             ];
             $this->Session->write('signup_data', $owner);
         }
-        $order = ['Company.id' => 'ASC'];
-        $companies = $this->Owner->Company->find('list', compact('order'));
-
-        $this->set(compact('companies'));
     }
 
-    /**
-     * ペット情報入力
-     */
-    private function __petInput() {
-        $data = $this->request->data;
-        $fieldList = [
-            'Owner' => [
-                'last_name',
-                'first_name',
-                'last_name_kana',
-                'first_name_kana',
-                'company_id',
-                'section',
-                'password',
-                'prefecture',
-                'is_open',
-            ],
-        ];
-        if (!$this->Owner->validateAssociated($data, compact('fieldList'))) {
-            $this->Session->setFlash('入力内容が正しくありません。ご確認ください', 'alert');
-            return;
-        }
-        $owner = $this->Session->read('signup_data');
-        $data['Owner']['email'] = $owner['Owner']['email'];
-        $this->Session->write('signup_data', $data);
-
-        /** @var PetClassification $PetClassification */
-        $PetClassification = ClassRegistry::init('PetClassification');
-        $order = ['PetClassification.id' => 'ASC'];
-        $petClassifications = $PetClassification->find('list', compact('order'));
-
-        $this->set(compact('petClassifications'));
-        $this->set('title_for_layout', 'ペット情報登録');
-        $this->render('/Owners/signup2');
-    }
-
-    /**
-     *
-     */
-    private function __questionnaireInput() {
-        $data = $this->request->data;
-        unset($data['Owner']);
-
-        if (!$this->Pet->validateMany($data['Pet'])) {
-            $this->Session->setFlash('入力内容が正しくありません。ご確認ください', 'alert');
-            /** @var PetClassification $PetClassification */
-            $PetClassification = ClassRegistry::init('PetClassification');
-            $order = ['PetClassification.id' => 'ASC'];
-            $petClassifications = $PetClassification->find('list', compact('order'));
-
-            $this->set(compact('petClassifications'));
-            $this->set('title_for_layout', 'ペット情報登録');
-            $this->render('/Owners/signup2');
-            return;
-        }
-
-        $owner = $this->Session->read('signup_data');
-        $owner['Pet'] = $data['Pet'];
-        $this->Session->write('signup_data', $data);
-
-        /** @var OwnerRegistrationService $OwnerRegistrationService */
-        $OwnerRegistrationService = new OwnerRegistrationService(new CakeEmail('bcc'), $this->OwnerRegistration, $this->Owner);
-        if (!$OwnerRegistrationService->saveOwner($owner)) {
-            $this->Session->setFlash('新規登録できませんでした。再度登録をお願いいたします', 'alert');
-            $this->redirect(['controller' => 'home', 'action' => 'index']);
-        }
-
-        $this->set('title_for_layout', '新規会員登録');
-        $this->render('/Owners/signup_complete');
-    }
-
-	public function login() {
+	public function admin_login() {
 		$this->set('title_for_layout', 'ログイン');
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
@@ -226,7 +166,7 @@ class OwnersController extends AppController {
 				));
 
 				$this->Session->setFlash(__('ログインしました。'), 'default', array('class' => 'success-message'),'success');
-				$this->redirect(['controller' => 'home', 'action' => 'index']);
+				$this->redirect(['controller' => 'owners', 'action' => 'index']);
 			} else {
 				$d = $this->data;
 				$this->Owner->recursive = -1;
@@ -252,14 +192,14 @@ class OwnersController extends AppController {
 		}
 
 	}
-	public function logout() {
+	public function admin_logout() {
 		$this->redirect($this->Auth->logout());
 	}
 
 	/**
 	 * パスワード再設定メールの送信
 	 */
-	public function password() {
+	public function admin_password() {
 		$this->set('title_for_layout', 'パスワード再設定');
 		if ($this->request->is(['post', 'put'])) {
 			$this->Owner->begin();
@@ -306,7 +246,7 @@ class OwnersController extends AppController {
 	 * @param $id
 	 * @param $token
 	 */
-	public function passwordChangeConfirm($id = null, $token = null) {
+	public function admin_passwordChangeConfirm($id = null, $token = null) {
 
 		$session_id = $this->Session->read('password_change_id');
 		$conditions = [];
@@ -343,7 +283,7 @@ class OwnersController extends AppController {
 	 * @param $id
 	 * @param $token
 	 */
-	public function passwordChangeComplete() {
+	public function admin_passwordChangeComplete() {
 		$id = $this->Session->read('password_change_id');
 
 		$owner = $this->Owner->findById($id);

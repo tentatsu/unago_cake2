@@ -11,10 +11,9 @@
 $this->Html->css('login', ['inline' => false]);
 ?>
 <div id="loginInnerWrap">
-    <div class="section"><img src="/images/common/bd_section.png" /></div>
     <div id="loginInner">
         <div id="loginInnerContent">
-            <div id="topIcon"><img src="/images/login/Icon_topIcon.png" width="100%" /></div>
+            <div id="topIcon"></div>
             <div id="sectionTop">
                 <p id="sectionTitle">新規会員登録</p>
                 <p id="sectionCaption">登録用のURLをお送りしますので、メールアドレスを入力してください。</p>

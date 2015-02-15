@@ -83,6 +83,13 @@ CakePlugin::load('Migrations');
 CakePlugin::load('Cakeplus');
 CakePlugin::load('BoostCake');
 CakePlugin::load('Upload');
+CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
+
+// Using Facebook strategy as an example
+Configure::write('Opauth.Strategy.Facebook', array(
+    'app_id' => 'YOUR FACEBOOK APP ID',
+    'app_secret' => 'YOUR FACEBOOK APP SECRET'
+));
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter . By default CakePHP bundles two filters:
@@ -174,7 +181,12 @@ function get_master_tag_names() {
 }
 
 function vd($o) {
-	if ( (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] == 'production') || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'aaaaa.jp') ){
+	if ( (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] == 'production') || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'aaaaa.jp') ) {
+        echo '<html><head><meta charset="utf-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>';
+        pr($_SERVER);
+        pr($o);
+        echo "</body></html>";
+        exit;
 	}else{
 		echo '<html><head><meta charset="utf-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>';
 		pr($o);

@@ -44,7 +44,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<?php echo $this->Html->link('BoostCake', array(
+			<?php echo $this->Html->link('ADMIN!!BoostCake', array(
 				'plugin' => 'boost_cake',
 				'controller' => 'boost_cake',
 				'action' => 'index'
