@@ -13,6 +13,12 @@
  * @since         CakePHP(tm) v 0.10.8.2117
  */
 
+if (isset($_SERVER['PRODUCTION'])) {
+    define('PRODUCTION', 1);
+} else {
+    define('PRODUCTION', 0);
+}
+
 require ROOT . DS . 'Vendor/autoload.php';
 spl_autoload_unregister(array('App', 'load'));
 spl_autoload_register(array('App', 'load'), true, true);
@@ -78,18 +84,6 @@ App::build([
  *
  */
 
-CakePlugin::load('DebugKit');
-CakePlugin::load('Migrations');
-CakePlugin::load('Cakeplus');
-CakePlugin::load('BoostCake');
-CakePlugin::load('Upload');
-CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
-
-// Using Facebook strategy as an example
-Configure::write('Opauth.Strategy.Facebook', array(
-    'app_id' => 'YOUR FACEBOOK APP ID',
-    'app_secret' => 'YOUR FACEBOOK APP SECRET'
-));
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter . By default CakePHP bundles two filters:
@@ -144,11 +138,6 @@ define('OWNER_STATUS_WITHDRAWAL', 20);
 // パスワード間違いのロック回数
 define('LOGIN_FAILER_MAX_COUNT', 6);
 
-Configure::write('Owner.signup_process', [
-    'pet' => '847538252935729357239a',
-    'questionnaire' => '5094873502943857209348572309452',
-]);
-
 Configure::write('MASTER_PREFECTURES', array(
 	'1' => '北海道', '2' => '青森県', '3' => '岩手県', '4' => '宮城県', '5' => '秋田県',
 	'6' => '山形県', '7' => '福島県', '8' => '茨城県', '9' => '栃木県', '10' => '群馬県',
@@ -170,6 +159,22 @@ Configure::write('MASTER_TAGS', array(
     '3' => array('name' => '色','column' => 'color'),
     '4' => array('name' => '味','column' => 'bitter'),
     '5' => array('name' => 'ボディ','column' => 'bottle_body'),
+));
+
+Configure::load("secret_configure");
+
+CakePlugin::load('DebugKit');
+CakePlugin::load('Migrations');
+CakePlugin::load('Cakeplus');
+CakePlugin::load('BoostCake');
+CakePlugin::load('Upload');
+CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
+
+// Using Facebook strategy as an example
+Configure::write('Opauth.Strategy.Facebook', array(
+    'app_id' => Configure::read("APP_FACEBOOK_APP_ID"),
+    'app_secret' => Configure::read("APP_FACEBOOK_APP_SECRET"),
+    'scope' => 'publish_actions,email,publish_stream'
 ));
 
 function get_master_tag_names() {

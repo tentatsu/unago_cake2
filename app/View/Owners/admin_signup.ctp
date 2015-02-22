@@ -45,7 +45,6 @@ $this->Html->scriptEnd();
                 'error' => false,
             ],
         ]); ?>
-        <?= $this->Form->hidden('p', ['value' => Configure::read('Owner.signup_process.pet')]); ?>
         <div class="inWrap">
             <div class="sectionBox">
                 <p id="subjectPt">※必須項目</p>

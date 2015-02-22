@@ -51,6 +51,16 @@ $ cp ./app/Config/local/database.php ./app/Config/database.php
 $ cp ./app/Config/local/email.php ./app/Config/email.php
 ```
 
+## .gitignoreの追加
+secretな設定ファイルを間違って登録しないためgitignoreを書き換えます。
+
+```
+vi ./.gitignore
+
+#/app/Config/secret_configure.php
+この行の#を取る。
+```
+
 ## DBを構築する
 /db/create_db.sqlを使用してunago_defaultのDBを作成してください。
 

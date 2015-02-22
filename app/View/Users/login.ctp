@@ -5,3 +5,5 @@
 <?php echo $this->Form->input('controller', array('type' => 'hidden', 'value' => $controller, 'label' => 'パスワード')); ?>
 <?php echo $this->Form->input('action', array('type' => 'hidden', 'value' => $action, 'label' => 'パスワード')); ?>
 <?php echo $this->Form->end('ログイン'); ?>
+
+<a href="<?php echo $this->Html->webroot; ?>auth/facebook/?controller=<?php echo h($controller); ?>&action=<?php echo h($action); ?>">ログイン</a>
